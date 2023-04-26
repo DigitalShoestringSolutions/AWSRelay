@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+        aws_relay:
+            extends:
+                file: aws_relay/app.yml
+                service: app
+            networks:
+                internal:
+                    aliases:
+                        - aws-relay.docker.local
+            logging:
+                    driver: syslog
+                    options:
+                            tag: docker-aws-relay
+            restart: unless-stopped
+
+networks:
+        internal:

@@ -1,0 +1,40 @@
+# INSTRUCTIONS
+# - set mqtt subscriber details to the broker of the solution
+# - set the subscriber topic
+# - update the remote prefix for the default mapping as required
+# - add additional mappings if needed
+
+# TOPIC MAPPING:
+# The table below explains the effect of different arrangements of mapping parameters
+# | Pattern           | Local Prefix       | Remote Prefix      | Effect:
+# |===================|====================|====================|=====================================
+# | pattern           | L/                 | R/                 | L/pattern -> R/pattern
+# | pattern           | L/                 | "" or not present  | L/pattern -> pattern
+# | pattern           | "" or not present  | R/                 | pattern -> R/pattern
+# | pattern           | "" or not present  | "" or not present  | (no change)
+# | "" or not present | local              | remote             | local -> remote
+
+[mqtt_subsciber]
+    broker = "192.168.56.110"
+    port = 1883
+
+[[mqtt_subsciber.subscription]]
+    topic="power_monitoring/#"
+
+#[[mqtt_subsciber.subscription]]
+#    topic="other/topic"
+
+[[mapper.topic]]
+    pattern = "#" #accepts wildcards: '+' for single level and '#' for anything thereafter
+#    local_prefix = "local/prefix"
+    remote_prefix = "exitex"
+
+[aws]
+    endpoint = "a2l3jb7dpjh66r-ats.iot.eu-west-1.amazonaws.com"
+    port = 8883   #common mqtt ports are 1883 and 8883
+
+    cert_path = "certs/certificate.pem.crt"
+    private_key_path = "certs/private.pem.key"
+    ca_path = "certs/AmazonRootCA1.pem"
+
+    client_id = "cambridge_test"

@@ -1,0 +1,4 @@
+awsiotsdk==1.13.0
+paho-mqtt==1.6.1
+tomli==2.0.1
+pyzmq==23.2.1
