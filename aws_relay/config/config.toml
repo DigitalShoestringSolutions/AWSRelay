@@ -27,7 +27,7 @@
 [[mapper.topic]]
     pattern = "#" #accepts wildcards: '+' for single level and '#' for anything thereafter
 #    local_prefix = "local/prefix"
-    remote_prefix = "exitex"
+    remote_prefix = "cambridge_lab"
 
 [aws]
     endpoint = "a2l3jb7dpjh66r-ats.iot.eu-west-1.amazonaws.com"
@@ -37,4 +37,4 @@
     private_key_path = "certs/private.pem.key"
     ca_path = "certs/AmazonRootCA1.pem"
 
-    client_id = "cambridge_test"
+    client_id = "cambridge_lab"

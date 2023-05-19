@@ -80,7 +80,7 @@ class AWSPublisher(multiprocessing.Process):
             on_connection_resumed=self.on_connection_resumed,
             client_id=self.clientId,
             clean_session=False,
-            keep_alive_secs=30)
+            keep_alive_secs=60)
 
         self.mqtt_connect(client)
 
@@ -94,7 +94,7 @@ class AWSPublisher(multiprocessing.Process):
                     msg_payload = msg_json['payload']
                     logger.debug(f'pub topic:{msg_topic} msg:{msg_payload}')
                     client.publish(
-                        topic=msg_payload,
+                        topic=msg_topic,
                         payload=json.dumps(msg_payload),
                         qos=mqtt.QoS.AT_LEAST_ONCE)
                 except zmq.ZMQError:
