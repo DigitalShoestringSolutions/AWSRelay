@@ -36,5 +36,6 @@
     cert_path = "certs/certificate.pem.crt"
     private_key_path = "certs/private.pem.key"
     ca_path = "certs/AmazonRootCA1.pem"
-
-    client_id = "cambridge_lab"
+	
+	#AWS doesn't like underscores in the client_id - it will silently ignore
+    client_id = "cambridgelab"
