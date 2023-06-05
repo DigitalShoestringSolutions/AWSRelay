@@ -15,11 +15,11 @@
 # | "" or not present | local              | remote             | local -> remote
 
 [mqtt_subsciber]
-    broker = "192.168.56.110"
+    broker = "172.18.0.4"  #point to the mqtt broker
     port = 1883
 
 [[mqtt_subsciber.subscription]]
-    topic="power_monitoring/#"
+    topic="power_monitoring/#"    #the mqtt topic shoestring mqtt broker uses
 
 #[[mqtt_subsciber.subscription]]
 #    topic="other/topic"
@@ -27,7 +27,7 @@
 [[mapper.topic]]
     pattern = "#" #accepts wildcards: '+' for single level and '#' for anything thereafter
 #    local_prefix = "local/prefix"
-    remote_prefix = "cambridge_lab"
+    remote_prefix = "IFM/companyname"  #modify this to your company name
 
 [aws]
     endpoint = "a2l3jb7dpjh66r-ats.iot.eu-west-1.amazonaws.com"
@@ -38,4 +38,4 @@
     ca_path = "certs/AmazonRootCA1.pem"
 	
 	#AWS doesn't like underscores in the client_id - it will silently ignore
-    client_id = "cambridgelab"
+    client_id = "companyname"  #your client id, avoid underscore
