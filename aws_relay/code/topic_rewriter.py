@@ -4,15 +4,15 @@ import logging
 import json
 
 context = zmq.Context()
-logger = logging.getLogger("main.topic_mapper")
+logger = logging.getLogger("main.topic_rewriter")
 
 
-class TopicMapper(multiprocessing.Process):
+class TopicRewriter(multiprocessing.Process):
     def __init__(self, config, zmq_conf):
         super().__init__()
 
-        mapper_conf = config['mapper']
-        self.mapping_tree, self.mapping_list = build_mapping_tree(mapper_conf['topic'])
+        topic_rw_conf = config['topic_rewriter']
+        self.mapping_tree, self.mapping_list = build_mapping_tree(topic_rw_conf['topic'])
 
         logger.debug(self.mapping_tree)
         logger.debug(self.mapping_list)

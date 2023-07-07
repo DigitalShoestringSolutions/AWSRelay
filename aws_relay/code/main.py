@@ -11,7 +11,8 @@ import logging
 import zmq
 # local
 import aws_publisher
-import topic_mapper
+import topic_rewriter
+import json_message_rewriter
 import mqtt_subscriber
 
 logger = logging.getLogger("main")
@@ -33,12 +34,15 @@ def create_building_blocks(config):
     bbs = {}
 
     mqtt_out = {"type": zmq.PUSH, "address": "tcp://127.0.0.1:4000", "bind": True}
-    mapper_in = {"type": zmq.PULL, "address": "tcp://127.0.0.1:4000", "bind": False}
-    mapper_out = {"type": zmq.PUSH, "address": "tcp://127.0.0.1:4001", "bind": True}
+    topic_rewrite_in = {"type": zmq.PULL, "address": "tcp://127.0.0.1:4000", "bind": False}
+    topic_rewrite_out = {"type": zmq.PUSH, "address": "tcp://127.0.0.1:4002", "bind": True}
+    message_rewrite_in = {"type": zmq.PULL, "address": "tcp://127.0.0.1:4002", "bind": False}
+    message_rewrite_out = {"type": zmq.PUSH, "address": "tcp://127.0.0.1:4001", "bind": True}
     publisher_in = {"type": zmq.PULL, "address": "tcp://127.0.0.1:4001", "bind": False}
 
     bbs["mqtt_subscriber"] = mqtt_subscriber.MQTTSubscriber(config, mqtt_out)
-    bbs["mapper"] = topic_mapper.TopicMapper(config, {'in': mapper_in, 'out': mapper_out})
+    bbs["topic_rewriter"] = topic_rewriter.TopicRewriter(config, {'in': topic_rewrite_in, 'out': topic_rewrite_out})
+    bbs["message_rewriter"] = json_message_rewriter.MessageRewriter(config, {'in': message_rewrite_in, 'out': message_rewrite_out})
     bbs["aws_publish"] = aws_publisher.AWSPublisher(config, publisher_in)
 
     logger.debug(f"bbs {bbs}")

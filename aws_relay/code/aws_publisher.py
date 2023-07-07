@@ -35,7 +35,7 @@ class AWSPublisher(multiprocessing.Process):
     def __init__(self, config, zmq_conf):
         super().__init__()
 
-        aws_conf = config['aws']
+        aws_conf = config['aws_publisher']
         self.endpoint = aws_conf['endpoint']
         self.port = int(aws_conf['port'])
         self.cert_path = aws_conf['cert_path']
