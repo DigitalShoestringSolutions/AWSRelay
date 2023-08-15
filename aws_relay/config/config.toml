@@ -1,11 +1,12 @@
 # INSTRUCTIONS
 # - set mqtt subscriber details to the broker of the solution
 # - set the subscriber topic
-# - update the remote prefix for the default mapping as required
+# - update the remote prefix for the default topic mapping as required
 # - add additional mappings if needed
+# - update/add further message rewrite entries
 
-# TOPIC MAPPING:
-# The table below explains the effect of different arrangements of mapping parameters
+# TOPIC REWRITER:
+# The table below explains the effect of different arrangements of topic remapping parameters
 # | Pattern           | Local Prefix       | Remote Prefix      | Effect:
 # |===================|====================|====================|=====================================
 # | pattern           | L/                 | R/                 | L/pattern -> R/pattern
@@ -14,22 +15,95 @@
 # | pattern           | "" or not present  | "" or not present  | (no change)
 # | "" or not present | local              | remote             | local -> remote
 
+# JSON MESSAGE REWRITER:
+# if append is true - changes dictated by the spec are added to the original message
+# if append is false - only the items contained in the spec are sent
+#
+# spec:
+# The spec can either be defined in json as spec_json or in toml as spec
+# The spec is made up of a set of 'keys' and 'values'.
+# 
+# Each spec key defines the message key in the output and the spec value defines the corresponding message value
+# 
+#  Example: 
+# | spec                   | Output                              |
+# |========================|=====================================|
+# | key:<value>            | { "key":<value> }                   |
+# | lvl1.lvl2.key: <value> | { "lvl1":{"lvl2":{"key":<value>"}}} |
+#
+# in a json spec, hierarchy can be expressed directly or using dot delimiters
+# e.g. {"a":{"b":{"c":"<spec_value>"}}} and {"a.b.c":"<spec_value>"} are equivalent
+# in toml this would be: 
+# [spec]
+# a.b.c. = "<spec_value>"
+#
+# Spec values are assumed to be jsonpath mappings to values in the original message unless prefixed:
+# more details on jsonpath can be found here: https://goessner.net/articles/JsonPath/
+# spec values with a '#' prefix are treated as json strings
+# An '=' predix is used for json numbers and special values
+# 
+#  Example:
+# | spec value  | message value |
+# |=============|===============|
+# | "#abc"      | "key":"abc"   |
+# | "=true"     | "key": true   !
+# | "=false"    | "key": false  |
+# | "=null"     | "key": null   |
+# | "=1.123"    | "key": 1.123  |
+# | "=1"        | "key": 1      |
+#
+#  JsonPath Example:
+#  original:
+# { 
+#  	"a": {
+#     "b": { 
+#	 	"c": "123",
+#       "d": "abc",
+#     },
+# 	},
+#   "e": true,
+# }
+#
+# | spec                    | output (append=false)       |
+# |=========================|=============================|
+# | "x":"$.a.b"             | {"x":{"c":"123","d":"abc"}} |
+# | "x":"$.a.b.c","y":"$.e" | {"x":"123","y":true}        |
+
 [mqtt_subsciber]
-    broker = "172.18.0.4"  #point to the mqtt broker
+    broker = "mqtt.docker.local"  #point to the mqtt broker
     port = 1883
 
 [[mqtt_subsciber.subscription]]
-    topic="power_monitoring/#"    #the mqtt topic shoestring mqtt broker uses
+    topic="#"    #the mqtt topic shoestring mqtt broker uses
+    # topic="power_monitoring/#"     # power monitoring starter solution
+    # topic="+/state/update/#"		 # job tracking starter solution
+	# topic="scrap_monitoring/#"	 # scrap monitoring starter solution
+	# topic="+/stoppages/#"			 # stoppage monitoring starter solution
 
 #[[mqtt_subsciber.subscription]]
 #    topic="other/topic"
 
-[[mapper.topic]]
+[[topic_rewriter.topic]]
     pattern = "#" #accepts wildcards: '+' for single level and '#' for anything thereafter
 #    local_prefix = "local/prefix"
-    remote_prefix = "IFM/companyname"  #modify this to your company name
+#    remote_prefix = "S301/1/<company>/<dataset>/<optional_machine_id>"  #standard format
+    remote_prefix = "S301/1/company_name/power"  #modify this to your company name
+    # remote_prefix = "S301/1/company_name/joblocations"  #modify this to your company name
+    # remote_prefix = "S301/1/company_name/scrap"  #modify this to your company name
+    # remote_prefix = "S301/1/company_name/downtime"  #modify this to your company name
+    # remote_prefix = "S301/1/company_name/airquality"  #modify this to your company name
+    # remote_prefix = "S301/1/company_name/temperature"  #modify this to your company name
 
-[aws]
+
+[[json_message_rewriter.entry]]
+	topic = "#"
+    append = true
+    spec_json = '''{"time":"$.timestamp"}'''
+	# equivalent
+	#[json_message_rewriter.entry.spec]
+	#	time="$.timestamp"
+
+[aws_publisher]
     endpoint = "a2l3jb7dpjh66r-ats.iot.eu-west-1.amazonaws.com"
     port = 8883   #common mqtt ports are 1883 and 8883
 
