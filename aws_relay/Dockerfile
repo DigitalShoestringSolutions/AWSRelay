@@ -18,10 +18,9 @@
 #
 # ----------------------------------------------------------------------
 
-FROM python:3.10.11
+FROM digitalshoestring/shoestring-aws-relay:v1.0.0
 
 COPY ./requirements.txt /
-RUN apt-get update && apt-get install cmake -y
 RUN pip3 install -r requirements.txt
 WORKDIR /app
 ADD ./code/ /app
