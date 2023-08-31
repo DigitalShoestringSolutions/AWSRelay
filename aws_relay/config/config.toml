@@ -84,8 +84,8 @@
 #    topic="other/topic"
 
 [[topic_rewriter.topic]]
-    pattern = "#" #accepts wildcards: '+' for single level and '#' for anything thereafter
-#    local_prefix = "local/prefix"
+    pattern = "" #accepts wildcards: '+' for single level and '#' for anything thereafter
+    local_prefix = "#"
 #    remote_prefix = "S301/1/<company>/<dataset>/<optional_machine_id>"  #standard format
     remote_prefix = "S301/1/company_name/power"  #modify this to your company name
     # remote_prefix = "S301/1/company_name/joblocations"  #modify this to your company name
