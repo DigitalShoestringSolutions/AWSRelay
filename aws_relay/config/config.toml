@@ -76,9 +76,9 @@
 [[mqtt_subsciber.subscription]]
     topic="#"    #the mqtt topic shoestring mqtt broker uses
     # topic="power_monitoring/#"     # power monitoring starter solution
-    # topic="+/state/update/#"		 # job tracking starter solution
-	# topic="scrap_monitoring/#"	 # scrap monitoring starter solution
-	# topic="+/stoppages/#"			 # stoppage monitoring starter solution
+    # topic="+/state/update/#"	     # job tracking starter solution
+    # topic="scrap_monitoring/#"     # scrap monitoring starter solution
+    # topic="+/stoppages/#"	     # stoppage monitoring starter solution
 
 #[[mqtt_subsciber.subscription]]
 #    topic="other/topic"
@@ -86,13 +86,7 @@
 [[topic_rewriter.topic]]
     pattern = "" #accepts wildcards: '+' for single level and '#' for anything thereafter
     local_prefix = "#"
-#    remote_prefix = "S301/1/<company>/<dataset>/<optional_machine_id>"  #standard format
-    remote_prefix = "S301/1/company_name/power"  #modify this to your company name
-    # remote_prefix = "S301/1/company_name/joblocations"  #modify this to your company name
-    # remote_prefix = "S301/1/company_name/scrap"  #modify this to your company name
-    # remote_prefix = "S301/1/company_name/downtime"  #modify this to your company name
-    # remote_prefix = "S301/1/company_name/airquality"  #modify this to your company name
-    # remote_prefix = "S301/1/company_name/temperature"  #modify this to your company name
+    remote_prefix = "string_provided_on_iot_file"  #modify this to your company name
 
 
 [[json_message_rewriter.entry]]
@@ -107,9 +101,9 @@
     endpoint = "a2l3jb7dpjh66r-ats.iot.eu-west-1.amazonaws.com"
     port = 8883   #common mqtt ports are 1883 and 8883
 
-    cert_path = "certs/certificate.pem.crt"
-    private_key_path = "certs/private.pem.key"
-    ca_path = "certs/AmazonRootCA1.pem"
+    cert_path = "certs/certificate.crt"
+    private_key_path = "certs/private.key"
+    ca_path = "certs/rootCA.pem"
 	
 	#AWS doesn't like underscores in the client_id - it will silently ignore
-    client_id = "companyname"  #your client id, avoid underscore
+    client_id = "companyid"  #your client id, avoid underscore
