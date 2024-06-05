@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------
 #
-#    Dockerfile script -- This file is part of the Shoestring AWS Relay 
+#    Dockerfile script -- This file is part of the Shoestring AWS Uploader 
 #
 #    Copyright (C) 2022  Shoestring and University of Cambridge
 #
