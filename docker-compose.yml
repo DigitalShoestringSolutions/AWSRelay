@@ -1,5 +1,3 @@
-version: '2'
-
 services:
   aws_relay:
     extends:
@@ -12,8 +10,3 @@ services:
       options:
         tag: docker-aws-relay
     restart: unless-stopped
-
-networks:
-  default:
-    name: shoestring-internal
-    external: true
