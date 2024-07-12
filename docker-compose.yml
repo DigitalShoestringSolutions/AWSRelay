@@ -1,12 +1,13 @@
 services:
-  aws_relay:
-    extends:
-      file: aws_relay/app.yml
-      service: app
-    networks:
-      default:
-    logging:
-      driver: syslog
-      options:
-        tag: docker-aws-relay
-    restart: unless-stopped
+    aws_relay:
+        build: .
+        volumes:
+            - ./config:/app/config
+            - ./certs:/app/certs
+        networks:
+            default:
+        logging:
+            driver: syslog
+            options:
+                tag: docker-aws-relay
+        restart: unless-stopped
