@@ -101,9 +101,9 @@
     endpoint = "a2l3jb7dpjh66r-ats.iot.eu-west-1.amazonaws.com"
     port = 8883   #common mqtt ports are 1883 and 8883
 
-    cert_path = "certs/certificate.crt"
-    private_key_path = "certs/private.key"
-    ca_path = "certs/rootCA.pem"
+    cert_path = "config/certs/certificate.crt"
+    private_key_path = "config/certs/private.key"
+    ca_path = "config/certs/rootCA.pem"
 	
 	#AWS doesn't like underscores in the client_id - it will silently ignore
     client_id = "companyid"  #your client id, avoid underscore

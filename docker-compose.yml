@@ -3,7 +3,6 @@ services:
         build: .
         volumes:
             - ./config:/app/config
-            - ./certs:/app/certs
         networks:
             default:
         logging:
